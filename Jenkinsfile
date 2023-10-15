@@ -1,14 +1,12 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:18.18.1-alpine3.18' 
-            args '-p 3000:3000' 
-        }
-    }
+    agent any
     stages {
-        stage('Build') { 
+        stage('Check Docker Image') {
             steps {
-                sh 'npm install' 
+                script {
+                    def dockerCmd = "/usr/bin/docker"  // Modify the path to the Docker executable
+                    sh "${dockerCmd} inspect -f . node:18.18.1-alpine3.18"
+                }
             }
         }
     }
